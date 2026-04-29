@@ -1,0 +1,145 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'signing'
+    id 'io.spring.dependency-management'
+}
+
+ext {
+    springBootVersion = '3.4.4'
+    springdocVersion = '2.8.6'
+    elementsVersion = '9.0.16'
+    elementsJsUrl = "https://unpkg.com/@stoplight/elements@${elementsVersion}/web-components.min.js"
+    elementsCssUrl = "https://unpkg.com/@stoplight/elements@${elementsVersion}/styles.min.css"
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
+    }
+}
+
+dependencies {
+    api 'org.springframework.boot:spring-boot-autoconfigure'
+    api "org.springdoc:springdoc-openapi-starter-webmvc-api:${springdocVersion}"
+
+    compileOnly 'jakarta.servlet:jakarta.servlet-api'
+    compileOnly 'org.springframework.boot:spring-boot-starter-actuator'
+
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-web'
+}
+
+// Task to download Stoplight Elements web component JS and CSS, bundled in the jar
+tasks.register('downloadElementsAssets') {
+    def outputDir = layout.projectDirectory.dir("src/main/resources/META-INF/resources/webjars/stoplight-elements")
+    def jsFile = outputDir.file("web-components.min.js")
+    def cssFile = outputDir.file("styles.min.css")
+
+    outputs.files(jsFile, cssFile)
+
+    doLast {
+        def jsDestFile = jsFile.asFile
+        jsDestFile.parentFile.mkdirs()
+        if (!jsDestFile.exists()) {
+            logger.lifecycle("Downloading Stoplight Elements JS v${elementsVersion}...")
+            new URL(elementsJsUrl).withInputStream { is ->
+                jsDestFile.withOutputStream { os ->
+                    os << is
+                }
+            }
+            logger.lifecycle("Downloaded Elements JS to ${jsDestFile.absolutePath}")
+        } else {
+            logger.lifecycle("Elements JS already present at ${jsDestFile.absolutePath}")
+        }
+
+        def cssDestFile = cssFile.asFile
+        if (!cssDestFile.exists()) {
+            logger.lifecycle("Downloading Stoplight Elements CSS v${elementsVersion}...")
+            new URL(elementsCssUrl).withInputStream { is ->
+                cssDestFile.withOutputStream { os ->
+                    os << is
+                }
+            }
+            logger.lifecycle("Downloaded Elements CSS to ${cssDestFile.absolutePath}")
+        } else {
+            logger.lifecycle("Elements CSS already present at ${cssDestFile.absolutePath}")
+        }
+    }
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+tasks.named('processResources') {
+    dependsOn 'downloadElementsAssets'
+}
+
+// sourcesJar reads from src/main/resources which downloadElementsAssets writes to
+tasks.named('sourcesJar') {
+    dependsOn 'downloadElementsAssets'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+tasks.withType(Javadoc).configureEach {
+    options.addStringOption('Xdoclint:none', '-quiet')
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifactId = 'springdoc-openapi-starter-webmvc-stoplight-elements'
+
+            versionMapping {
+                usage('java-api') { fromResolutionOf('runtimeClasspath') }
+                usage('java-runtime') { fromResolutionResult() }
+            }
+
+            pom {
+                name = 'SpringDoc OpenAPI Starter WebMVC Stoplight Elements'
+                description = 'Spring Boot starter that integrates Stoplight Elements API documentation UI with springdoc-openapi'
+                url = 'https://github.com/chandanv89/springdoc-openapi-starter-stoplight-elements'
+                licenses {
+                    license {
+                        name = 'Apache License, Version 2.0'
+                        url = 'https://www.apache.org/licenses/LICENSE-2.0'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'chandanv89'
+                        name = 'Chandan Veerabhadrappa'
+                        email = 'chandanv89@gmail.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/chandanv89/springdoc-openapi-starter-stoplight-elements.git'
+                    developerConnection = 'scm:git:ssh://github.com/chandanv89/springdoc-openapi-starter-stoplight-elements.git'
+                    url = 'https://github.com/chandanv89/springdoc-openapi-starter-stoplight-elements'
+                }
+            }
+        }
+    }
+}
+
+signing {
+    def signingKey = System.getenv('GPG_SIGNING_KEY')
+    def signingPassword = System.getenv('GPG_SIGNING_PASSWORD') ?: ''
+    if (signingKey) {
+        useInMemoryPgpKeys(signingKey, signingPassword)
+    }
+    sign publishing.publications.mavenJava
+}
+
+// Don't fail build if signing credentials are absent (local dev)
+tasks.withType(Sign).configureEach {
+    onlyIf { System.getenv('GPG_SIGNING_KEY') != null }
+}

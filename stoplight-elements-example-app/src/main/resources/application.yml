@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: stoplight-elements-example-app
+
+server:
+  servlet:
+    context-path: /example-app
+
+springdoc:
+  stoplight-elements:
+    path: /api-docs
+    title: Bookstore API Documentation
+    layout: responsive
+    router: hash
+    hideExport: true
+    ## Uncomment below to use CDN instead of bundled assets:
+    # use-cdn: true
+    ## Uncomment below to hide the Try It feature:
+    # hide-try-it: true
+    ## Uncomment below to add a custom logo:
+    # logo: https://example.com/logo.png

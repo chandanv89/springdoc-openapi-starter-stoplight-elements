@@ -1,0 +1,167 @@
+{
+  "groups": [
+    {
+      "name": "springdoc.stoplight-elements",
+      "type": "io.github.chandanv89.springdoc.elements.StoplightElementsConfigProperties",
+      "description": "Configuration properties for the Stoplight Elements API documentation UI."
+    }
+  ],
+  "properties": [
+    {
+      "name": "springdoc.stoplight-elements.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether the Stoplight Elements UI endpoint is enabled.",
+      "defaultValue": true
+    },
+    {
+      "name": "springdoc.stoplight-elements.path",
+      "type": "java.lang.String",
+      "description": "The URL path where the Stoplight Elements UI is served.",
+      "defaultValue": "/api-docs"
+    },
+    {
+      "name": "springdoc.stoplight-elements.spec-url",
+      "type": "java.lang.String",
+      "description": "The URL of the OpenAPI specification to render.",
+      "defaultValue": "/v3/api-docs"
+    },
+    {
+      "name": "springdoc.stoplight-elements.title",
+      "type": "java.lang.String",
+      "description": "The HTML page title for the Stoplight Elements documentation page.",
+      "defaultValue": "API Documentation"
+    },
+    {
+      "name": "springdoc.stoplight-elements.use-cdn",
+      "type": "java.lang.Boolean",
+      "description": "Whether to load Elements JS and CSS from a CDN instead of the bundled versions.",
+      "defaultValue": false
+    },
+    {
+      "name": "springdoc.stoplight-elements.cdn-js-url",
+      "type": "java.lang.String",
+      "description": "The CDN URL for the Stoplight Elements web component JS file. Used only when use-cdn is true.",
+      "defaultValue": "https://unpkg.com/@stoplight/elements/web-components.min.js"
+    },
+    {
+      "name": "springdoc.stoplight-elements.cdn-css-url",
+      "type": "java.lang.String",
+      "description": "The CDN URL for the Stoplight Elements CSS file. Used only when use-cdn is true.",
+      "defaultValue": "https://unpkg.com/@stoplight/elements/styles.min.css"
+    },
+    {
+      "name": "springdoc.stoplight-elements.layout",
+      "type": "java.lang.String",
+      "description": "The layout mode: sidebar (default), responsive, or stacked.",
+      "defaultValue": "sidebar"
+    },
+    {
+      "name": "springdoc.stoplight-elements.router",
+      "type": "java.lang.String",
+      "description": "The router mode: hash (default), history, memory, or static.",
+      "defaultValue": "hash"
+    },
+    {
+      "name": "springdoc.stoplight-elements.hide-internal",
+      "type": "java.lang.Boolean",
+      "description": "When true, filters out any content marked as internal with x-internal."
+    },
+    {
+      "name": "springdoc.stoplight-elements.hide-try-it",
+      "type": "java.lang.Boolean",
+      "description": "When true, hides the Try It feature completely."
+    },
+    {
+      "name": "springdoc.stoplight-elements.hide-try-it-panel",
+      "type": "java.lang.Boolean",
+      "description": "When true, hides the Try It panel while still displaying the Request Sample."
+    },
+    {
+      "name": "springdoc.stoplight-elements.hide-schemas",
+      "type": "java.lang.Boolean",
+      "description": "When true, hides the schemas in the Table of Contents (sidebar layout only)."
+    },
+    {
+      "name": "springdoc.stoplight-elements.hide-export",
+      "type": "java.lang.Boolean",
+      "description": "When true, hides the Export button on the overview section."
+    },
+    {
+      "name": "springdoc.stoplight-elements.try-it-cors-proxy",
+      "type": "java.lang.String",
+      "description": "URL of a CORS proxy used to send requests via the Try It feature."
+    },
+    {
+      "name": "springdoc.stoplight-elements.try-it-credentials-policy",
+      "type": "java.lang.String",
+      "description": "Credential policy for the Try It feature: omit (default), include, or same-origin."
+    },
+    {
+      "name": "springdoc.stoplight-elements.logo",
+      "type": "java.lang.String",
+      "description": "URL to an image displayed as a small square logo next to the title."
+    },
+    {
+      "name": "springdoc.stoplight-elements.base-path",
+      "type": "java.lang.String",
+      "description": "Base path for history router when docs are in a subdirectory."
+    }
+  ],
+  "hints": [
+    {
+      "name": "springdoc.stoplight-elements.layout",
+      "values": [
+        {
+          "value": "sidebar",
+          "description": "Three-column design with a resizable sidebar (default)."
+        },
+        {
+          "value": "responsive",
+          "description": "Like sidebar, but collapses to a drawer on small screens."
+        },
+        {
+          "value": "stacked",
+          "description": "Single-column layout for integration with existing navigation."
+        }
+      ]
+    },
+    {
+      "name": "springdoc.stoplight-elements.router",
+      "values": [
+        {
+          "value": "hash",
+          "description": "Uses the hash portion of the URL (default)."
+        },
+        {
+          "value": "history",
+          "description": "Uses the HTML5 history API."
+        },
+        {
+          "value": "memory",
+          "description": "Keeps history in memory only."
+        },
+        {
+          "value": "static",
+          "description": "Renders using a static router."
+        }
+      ]
+    },
+    {
+      "name": "springdoc.stoplight-elements.try-it-credentials-policy",
+      "values": [
+        {
+          "value": "omit",
+          "description": "Do not include credentials (default)."
+        },
+        {
+          "value": "include",
+          "description": "Always include credentials."
+        },
+        {
+          "value": "same-origin",
+          "description": "Include credentials for same-origin requests only."
+        }
+      ]
+    }
+  ]
+}

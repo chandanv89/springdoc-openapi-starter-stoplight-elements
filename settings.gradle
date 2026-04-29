@@ -1,0 +1,17 @@
+plugins {
+    id 'com.gradleup.nmcp.settings' version '1.4.4'
+}
+
+rootProject.name = 'springdoc-openapi-stoplight-elements'
+
+include 'springdoc-openapi-starter-webmvc-stoplight-elements'
+include 'springdoc-openapi-starter-webflux-stoplight-elements'
+include 'stoplight-elements-example-app'
+
+nmcpSettings {
+    centralPortal {
+        username = System.getenv('OSSRH_USERNAME') ?: settings.providers.gradleProperty('ossrhUsername').getOrElse('')
+        password = System.getenv('OSSRH_PASSWORD') ?: settings.providers.gradleProperty('ossrhPassword').getOrElse('')
+        publishingType = 'USER_MANAGED'
+    }
+}

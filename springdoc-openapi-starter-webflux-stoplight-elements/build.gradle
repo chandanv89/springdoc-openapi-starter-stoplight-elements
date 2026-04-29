@@ -1,0 +1,93 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'signing'
+    id 'io.spring.dependency-management'
+}
+
+ext {
+    springBootVersion = '3.4.4'
+    springdocVersion = '2.8.6'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
+    }
+}
+
+dependencies {
+    api project(':springdoc-openapi-starter-webmvc-stoplight-elements') // Reuses ConfigProperties + IndexTransformer
+    api "org.springdoc:springdoc-openapi-starter-webflux-api:${springdocVersion}"
+
+    compileOnly 'org.springframework.boot:spring-boot-starter-webflux'
+
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-webflux'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+tasks.withType(Javadoc).configureEach {
+    options.addStringOption('Xdoclint:none', '-quiet')
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifactId = 'springdoc-openapi-starter-webflux-stoplight-elements'
+
+            versionMapping {
+                usage('java-api') { fromResolutionOf('runtimeClasspath') }
+                usage('java-runtime') { fromResolutionResult() }
+            }
+
+            pom {
+                name = 'SpringDoc OpenAPI Starter WebFlux Stoplight Elements'
+                description = 'Spring Boot starter that integrates Stoplight Elements API documentation UI with springdoc-openapi for WebFlux applications'
+                url = 'https://github.com/chandanv89/springdoc-openapi-starter-stoplight-elements'
+                licenses {
+                    license {
+                        name = 'Apache License, Version 2.0'
+                        url = 'https://www.apache.org/licenses/LICENSE-2.0'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'chandanv89'
+                        name = 'Chandan Veerabhadrappa'
+                        email = 'chandanv89@gmail.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/chandanv89/springdoc-openapi-starter-stoplight-elements.git'
+                    developerConnection = 'scm:git:ssh://github.com/chandanv89/springdoc-openapi-starter-stoplight-elements.git'
+                    url = 'https://github.com/chandanv89/springdoc-openapi-starter-stoplight-elements'
+                }
+            }
+        }
+    }
+}
+
+signing {
+    def signingKey = System.getenv('GPG_SIGNING_KEY')
+    def signingPassword = System.getenv('GPG_SIGNING_PASSWORD') ?: ''
+    if (signingKey) {
+        useInMemoryPgpKeys(signingKey, signingPassword)
+    }
+    sign publishing.publications.mavenJava
+}
+
+tasks.withType(Sign).configureEach {
+    onlyIf { System.getenv('GPG_SIGNING_KEY') != null }
+}
