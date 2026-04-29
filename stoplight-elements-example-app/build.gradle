@@ -4,6 +4,7 @@ plugins {
 }
 
 dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation project(':springdoc-openapi-starter-webmvc-stoplight-elements')
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 

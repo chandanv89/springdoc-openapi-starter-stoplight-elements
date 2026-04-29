@@ -16,6 +16,8 @@ with [springdoc-openapi](https://springdoc.org/). Add the dependency, and get be
 * Automatic code samples
 * OpenAPI 3.1/3.0/2.0 support
 
+![Stoplight Elements Screenshot](docs/assets/stoplight-screenshot.png)
+
 ---
 
 ## Quick Start
