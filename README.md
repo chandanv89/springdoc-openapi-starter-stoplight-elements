@@ -1,5 +1,6 @@
 # springdoc-openapi-starter-stoplight-elements
 
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.chandanv89/springdoc-openapi-starter-webmvc-stoplight-elements)](https://central.sonatype.com/artifact/io.github.chandanv89/springdoc-openapi-starter-webmvc-stoplight-elements)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Java](https://img.shields.io/badge/Java-17%2B-orange.svg)](https://openjdk.java.net/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.4%2B-brightgreen.svg)](https://spring.io/projects/spring-boot)
@@ -24,13 +25,11 @@ with [springdoc-openapi](https://springdoc.org/). Add the dependency, and get be
 Just add this single dependency — it transitively includes `springdoc-openapi-starter-webmvc-api`, which provides the
 `/v3/api-docs` endpoint.
 
-> **Note:** Replace `${elements.version}` with the latest version.
-
 **Gradle:**
 
 ```groovy
 dependencies {
-    implementation 'io.github.chandanv89:springdoc-openapi-starter-webmvc-stoplight-elements:${elements.version}'
+    implementation 'io.github.chandanv89:springdoc-openapi-starter-webmvc-stoplight-elements:1.0.0'
 }
 ```
 
@@ -41,14 +40,14 @@ dependencies {
 <dependency>
     <groupId>io.github.chandanv89</groupId>
     <artifactId>springdoc-openapi-starter-webmvc-stoplight-elements</artifactId>
-    <version>${elements.version}</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 
 For **WebFlux** applications, use the WebFlux variant instead:
 
 ```groovy
-implementation 'io.github.chandanv89:springdoc-openapi-starter-webflux-stoplight-elements:${elements.version}'
+implementation 'io.github.chandanv89:springdoc-openapi-starter-webflux-stoplight-elements:1.0.0'
 ```
 
 ### 2. Start Your Application
